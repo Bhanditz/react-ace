@@ -4,12 +4,13 @@ const path = require('path');
 
 module.exports = {
   devtool: 'source-map',
-  entry: [
-    './example/index',
-  ],
+  entry: {
+    'index': './example/index',
+    'split': './example/split',
+  },
   output: {
     path: path.join(__dirname, 'example/static'),
-    filename: 'bundle.js',
+    filename: '[name].js',
     publicPath: '/static/',
   },
   plugins: [
