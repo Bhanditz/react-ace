@@ -269,6 +269,7 @@ class App extends Component {
           highlightActiveLine={this.state.highlightActiveLine}
           value={this.state.value}
           setOptions={{
+            displayIndentGuides: false,
             enableBasicAutocompletion: this.state.enableBasicAutocompletion,
             enableLiveAutocompletion: this.state.enableLiveAutocompletion,
             enableSnippets: this.state.enableSnippets,

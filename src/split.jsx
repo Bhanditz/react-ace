@@ -55,6 +55,9 @@ export default class SplitComponent extends Component {
     this.editor.env.split = split;
 
     this.splitEditor = split.getEditor(0);
+    // in a split scenario we don't want a print margin for the entire application
+    this.editor.setShowPrintMargin(false);
+    this.editor.renderer.setShowGutter(false);
     // get a list of possible options to avoid 'misspelled option errors'
     const availableOptions = this.splitEditor.$options;
     split.forEach((editor, index) => {
@@ -186,10 +189,6 @@ export default class SplitComponent extends Component {
       this.handleMarkers(nextProps.markers);
     }
 
-    // this doesn't look like it works at all....
-    if (!isEqual(nextProps.scrollMargin, oldProps.scrollMargin)) {
-      this.handleScrollMargins(nextProps.scrollMargin)
-    }
     // if (this.editor && this.editor.getValue() !== nextProps.value) {
     //   // editor.setValue is a synchronous function call, change event is emitted before setValue return.
     //   this.silent = true;
@@ -205,10 +204,6 @@ export default class SplitComponent extends Component {
     if(nextProps.height !== this.props.height){
       this.editor.resize();
     }
-  }
-
-  handleScrollMargins(margins = [0, 0, 0, 0]) {
-    this.editor.renderer.setScrollMargins(margins[0], margins[1], margins[2], margins[3])
   }
 
   componentWillUnmount() {
@@ -228,7 +223,10 @@ export default class SplitComponent extends Component {
 
   onSelectionChange(event) {
     if (this.props.onSelectionChange) {
-      const value = this.splitEditor.getSelection();
+      let value = []
+      this.editor.env.split.forEach((editor) => {
+        value.push(editor.getSelection())
+      })
       this.props.onSelectionChange(value, event);
     }
   }
